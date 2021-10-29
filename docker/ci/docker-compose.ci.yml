@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  grpc-web:
+    image: nginx/grpc-web
+    container_name: nginx-grpc-web
+# TODO: Disable databases environments, but will be accesses by Kafka and RabbitMQ.
+
+volumes:
+  grpc-web-log:
+    driver: local
+  grpc-web-data:
+    driver: local
+
+networks:
+  grpc-tier:
+    driver: bridge

@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  grpc-server:
+    hostname: grpc-server
+    image: node/grpc-server
+    build:
+      context: ../../../..
+      dockerfile: docker/dev/server/lib/Dockerfile
+      args:
+        ENV: ${NODE_ENV:-dev}
+        HOST: ${NODE_HOST:-0.0.0.0}
+        PORT: ${NODE_PORT:-4200}
+    tty: true
+    stop_signal: SIGTERM
+    container_name: node-grpc-server
+    restart: unless-stopped
+    env_file:
+      - server.env
+    ports:
+      - protocol: TCP
+        published: 4200
+        target: 4200
+    expose:
+      - 4200
+    privileged: true
+    pid: "host"
+    stop_grace_period: 5s
+    tmpfs:
+      - /tmp
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 262144
+        hard: 262144
+    cpu_shares: 4
+    networks:
+      - grpc-tier

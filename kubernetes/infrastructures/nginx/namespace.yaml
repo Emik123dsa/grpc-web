@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx
+  labels:
+    app: nginx-persistent
+    tier: nginx
+    role: persistent

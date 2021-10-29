@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-path-pvc-volume
+  namespace: common
+  labels:
+    app: common
+    tier: cluster
+    role: namespace
+spec:
+  storageClassName: local-path
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

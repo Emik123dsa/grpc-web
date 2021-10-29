@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: common
+  labels:
+    app: common
+    tier: cluster
+    role: namespace

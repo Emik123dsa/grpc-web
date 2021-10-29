@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  grpc-web:
+    image: nginx/grpc-web/ci
+    container_name: nginx-grpc-web-ci
+    extends:
+      file: ../base/docker-compose.base.yml
+      service: grpc-web
