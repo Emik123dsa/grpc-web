@@ -9,14 +9,15 @@ ARG NGINX_HOST
 
 RUN usermod --non-unique --uid 1000 www-data
 
-# gnupg1 will be removed.
+# Install lua libraries for working with environment variables and so on.
 RUN apt-get upgrade -y && \
     apt-get update -y && \  
-    apt-get install --no-install-recommends --no-install-suggests -y ca-certificates \
-    gettext-base \
+    apt-get install --no-install-recommends --no-install-suggests -y \
     curl \ 
+    netcat \
     net-tools \
-    netcat && \
+    gettext-base \
+    ca-certificates && \
     apt-get remove --purge --auto-remove -y && \ 
     rm -rf /var/lib/apt/lists/*
 
@@ -37,9 +38,16 @@ COPY config/template/*.conf /etc/nginx/template/*.conf
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
+# Enable runtime in docker-entrypoint.sh config. Enable in production only.
+# COPY lib/web/docker-entrypoint.sh /
+# RUN chmod a+x /docker-entrypoint.sh && \
+#     chown -R www-data:www-data /docker-entrypoint.sh
+
 EXPOSE ${NGINX_PORT}/TCP
 EXPOSE ${NGINX_SSL_PORT}/TCP
 
 STOPSIGNAL SIGTERM
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD [ "nginx", "-g", "daemon off;" ]
