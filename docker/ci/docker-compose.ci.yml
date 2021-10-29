@@ -4,6 +4,9 @@ services:
   grpc-web:
     image: nginx/grpc-web
     container_name: nginx-grpc-web
+  grpc-server:
+    image: node/grpc-server
+    container_name: node-grpc-server
 # TODO: Disable databases environments, but will be accesses by Kafka and RabbitMQ.
 
 volumes:

@@ -2,10 +2,10 @@ FROM nginx:1.21.3 as grpc-web
 
 LABEL maintainer="Emil Shari <emil.shari87@gmail.com>"
 
-# Override and create default context user.
-# RUN set -x \
-#     && addgroup --system --gid 101 www-data \
-#     && adduser --system --disabled-login --ingroup www-data --no-create-home --home /nonexistent --gecos "www-data user" --shell /bin/false --uid 101 www-data
+ARG NGINX_PORT
+ARG NGINX_SSL_PORT
+ARG NGINX_VERSION
+ARG NGINX_HOST
 
 RUN usermod --non-unique --uid 1000 www-data
 
@@ -20,9 +20,10 @@ RUN apt-get upgrade -y && \
     apt-get remove --purge --auto-remove -y && \ 
     rm -rf /var/lib/apt/lists/*
 
-RUN usermod -s /bin/bash www-data
 # Remove default configuration files, it will be overrided straightforwardly.
 RUN rm /etc/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+RUN usermod -s /bin/bash www-data
 
 # Copying all of the required configs with overrided structure.
 COPY config/nginx.conf /etc/nginx/nginx.conf
@@ -36,8 +37,8 @@ COPY config/template/*.conf /etc/nginx/template/*.conf
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
-EXPOSE 80/TCP
-EXPOSE 443/TCP
+EXPOSE ${NGINX_PORT}/TCP
+EXPOSE ${NGINX_SSL_PORT}/TCP
 
 STOPSIGNAL SIGTERM
 

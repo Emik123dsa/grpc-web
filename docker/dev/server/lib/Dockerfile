@@ -24,9 +24,17 @@ FROM node:14.18.1 as grpc-server
 
 LABEL maintainer="Emil Shari <emil.shari87@gmail.com>"
 
+ARG VERSION
 ARG ENV
 ARG PORT
 ARG HOST
+
+# Install netcat for checking health state in docker/kubernetes environment.
+RUN apt-get upgrade -y && \
+    apt-get update -y && \  
+    apt-get install --no-install-recommends --no-install-suggests -qy netcat && \
+    apt-get remove --purge --auto-remove -y && \ 
+    rm -rf /var/lib/apt/lists/*
 
 RUN usermod --non-unique --uid 1000 node  
 
@@ -37,8 +45,9 @@ RUN usermod -s /bin/bash node
 ENV NODE_ENV ${ENV}
 ENV NODE_PORT ${PORT}
 ENV NODE_HOST ${HOST}
+ENV NODE_VERSION ${VERSION}
 
-WORKDIR /var/www/grpc/$NODE_ENV/server
+WORKDIR /var/www/grpc/server/$NODE_ENV
 
 ADD --chown=node:node server/package* ./
 RUN yarn install --pure-lockfile

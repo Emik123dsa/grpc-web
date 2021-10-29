@@ -7,3 +7,9 @@ services:
     extends:
       file: ../base/docker-compose.base.yml
       service: grpc-web
+  grpc-server:
+    image: node/grpc-server/ci
+    container_name: node-grpc-server-ci
+    extends:
+      file: ../prod/docker-compose.prod.yml
+      service: grpc-server
