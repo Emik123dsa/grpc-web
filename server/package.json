@@ -4,6 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "node src/index.js"
+    "dev": "nodemon src/index.ts",
+    "start": "ts-node --show-config src/index.ts"
+  },
+  "dependencies": {
+    "ts-node": "^10.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "nodemon": "^2.0.14",
+    "typescript": "^4.4.4"
   }
 }
