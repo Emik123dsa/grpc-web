@@ -46,6 +46,9 @@ ADD --chown=node:node server/package* ./
 RUN yarn install --frozen-lockfile
 ADD --chown=node:node server/ .
 
+# Copy essential tsconfig.*.json into previous folder.
+COPY --chown=node:node tsconfig.*.json ../*.json
+
 # Prebuild shenanigans with yarn.
 RUN yarn run build
 ADD --chown=node:node server/build .

@@ -23,12 +23,12 @@
 version: "3.9"
 
 services:
+  grpc-server:
+    image: node/grpc-server
+    # container_name: node-grpc-server
   grpc-web:
     image: nginx/grpc-web
     container_name: nginx-grpc-web
-  grpc-server:
-    image: node/grpc-server
-    container_name: node-grpc-server
 
 volumes:
   grpc-web-log:

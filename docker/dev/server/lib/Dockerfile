@@ -29,6 +29,8 @@ ARG ENV
 ARG PORT
 ARG HOST
 
+VOLUME /tmp
+
 # Install netcat for checking health state in docker/kubernetes environment.
 RUN apt-get upgrade -y && \
     apt-get update -y && \  
@@ -49,9 +51,13 @@ ENV NODE_VERSION ${VERSION}
 
 WORKDIR /var/www/grpc/server/$NODE_ENV
 
+# Add grpc-server internal src/ files into work folder.
 ADD --chown=node:node server/package* ./
 RUN yarn install --pure-lockfile
 ADD --chown=node:node server/ .
+
+# Copy essential tsconfig.*.json into previous folder.
+COPY --chown=node:node *tsconfig.*.json ../*.json
 
 EXPOSE ${NODE_PORT}/TCP
 

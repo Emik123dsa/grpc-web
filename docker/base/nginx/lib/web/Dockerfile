@@ -7,6 +7,8 @@ ARG NGINX_SSL_PORT
 ARG NGINX_VERSION
 ARG NGINX_HOST
 
+VOLUME /tmp
+
 RUN usermod --non-unique --uid 1000 www-data
 
 # Install lua libraries for working with environment variables and so on.
